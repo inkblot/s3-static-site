@@ -12,6 +12,7 @@ Capistrano::Configuration.instance(true).load do
   end
   
   _cset :deployment_path, Dir.pwd.gsub("\n", "") + "/public"
+  _cset :object_acl, :public_read
   
   def base_file_path(file)
     file.gsub(deployment_path, "")
@@ -68,11 +69,11 @@ Capistrano::Configuration.instance(true).load do
             types = MIME::Types.type_for(File.basename(file))
             if types.empty?
               options = {
-                :acl => :public_read
+                :acl => object_acl
               }
             else
               options = {
-                :acl => :public_read,
+                :acl => object_acl,
                 :content_type => types[0]
               }
             end
